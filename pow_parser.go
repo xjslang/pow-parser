@@ -1,20 +1,3 @@
-// Package powparser provides a plugin for the xjs parser to support the '**' power operator.
-//
-// The plugin registers a new token type for '**', parses it as a power expression, and
-// translates it to JavaScript using Math.pow.
-//
-// Example usage:
-//
-//	import (
-//	    "github.com/xjslang/xjs/parser"
-//	    "github.com/xjslang/pow-parser"
-//	)
-//
-//	func main() {
-//	    p := parser.NewParser()
-//	    powparser.InstallPlugin(p)
-//	    // Now the parser supports '**' as a power operator.
-//	}
 package powparser
 
 import (
