@@ -39,7 +39,7 @@ func InstallPlugin(p *parser.Parser) {
 		return next()
 	})
 
-	// registers the infix `**` operator
+	// registers the infix `**` operator with a specific precedence
 	p.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(left ast.Expression, right func() ast.Expression) ast.Expression {
 		return &PowExpression{
 			Token: p.CurrentToken,
