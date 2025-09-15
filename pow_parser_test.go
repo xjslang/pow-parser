@@ -10,9 +10,8 @@ import (
 
 func TestMain(m *testing.T) {
 	input := "let area = side**2"
-	l := lexer.New(input)
-	p := parser.New(l)
-	InstallPlugin(p)
+	lb := lexer.NewBuilder()
+	p := parser.NewBuilder(lb).Install(Plugin).Build(input)
 	ast, err := p.ParseProgram()
 	if err != nil {
 		panic(fmt.Sprintf("ParseProgram() error: %v", err))

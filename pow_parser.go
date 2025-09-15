@@ -25,12 +25,12 @@ func (pe *PowExpression) WriteTo(b *strings.Builder) {
 	b.WriteRune(')')
 }
 
-// InstallPlugin install the plugin in the parser
-func InstallPlugin(p *parser.Parser) {
+func Plugin(pb *parser.Builder) {
 	// registes a new token type and
 	// instructs the parser who to read the new `**` token
-	powTokenType := p.Lexer.RegisterTokenType("pow")
-	p.Lexer.UseTokenReader(func(l *lexer.Lexer, next func() token.Token) token.Token {
+	lb := pb.LexerBuilder
+	powTokenType := lb.RegisterTokenType("pow")
+	lb.UseTokenReader(func(l *lexer.Lexer, next func() token.Token) token.Token {
 		if l.CurrentChar == '*' && l.PeekChar() == '*' {
 			l.ReadChar() // consume the first '*'
 			l.ReadChar() // consume the last '*'
@@ -40,9 +40,9 @@ func InstallPlugin(p *parser.Parser) {
 	})
 
 	// registers the infix `**` operator with a specific precedence
-	p.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(left ast.Expression, right func() ast.Expression) ast.Expression {
+	pb.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(token token.Token, left ast.Expression, right func() ast.Expression) ast.Expression {
 		return &PowExpression{
-			Token: p.CurrentToken,
+			Token: token,
 			Left:  left,
 			Right: right(),
 		}
