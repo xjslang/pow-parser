@@ -30,7 +30,7 @@ func Plugin(pb *parser.Builder) {
 	// instructs the parser who to read the new `**` token
 	lb := pb.LexerBuilder
 	powTokenType := lb.RegisterTokenType("pow")
-	lb.UseTokenReader(func(l lexer.Lexer, next func() token.Token) token.Token {
+	lb.UseTokenReader(func(l *lexer.Lexer, next func() token.Token) token.Token {
 		if l.CurrentChar() == '*' && l.PeekChar() == '*' {
 			l.ReadChar() // consume the first '*'
 			l.ReadChar() // consume the last '*'
