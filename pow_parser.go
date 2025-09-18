@@ -40,7 +40,7 @@ func Plugin(pb *parser.Builder) {
 	})
 
 	// registers the infix `**` operator with a specific precedence
-	pb.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(token token.Token, left ast.Expression, right func() ast.Expression) ast.Expression {
+	pb.UseInfixOperator(powTokenType, parser.PRODUCT+1, func(token token.Token, left ast.Expression, right func() ast.Expression) ast.Expression {
 		return &PowExpression{
 			Token: token,
 			Left:  left,
