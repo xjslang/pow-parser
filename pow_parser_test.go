@@ -9,7 +9,7 @@ import (
 )
 
 func TestMain(m *testing.T) {
-	input := "let area = side**2"
+	input := "a() ** 2"
 	lb := lexer.NewBuilder()
 	p := parser.NewBuilder(lb).Install(Plugin).Build(input)
 	ast, err := p.ParseProgram()
