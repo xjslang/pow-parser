@@ -9,7 +9,11 @@ import (
 )
 
 func TestMain(m *testing.T) {
-	input := "a() ** 2"
+	input := `
+	if (typeof a == 'function') {
+		return a() ** 2
+	}
+	`
 	lb := lexer.NewBuilder()
 	p := parser.NewBuilder(lb).Install(Plugin).Build(input)
 	ast, err := p.ParseProgram()
