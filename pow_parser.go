@@ -17,7 +17,6 @@ func (te *TypeofExpression) WriteTo(b *strings.Builder) {
 	if te.Operator == "typeof" {
 		b.WriteString("typeof ")
 		te.Right.WriteTo(b)
-		b.WriteRune(')')
 	} else {
 		te.UnaryExpression.WriteTo(b)
 	}
