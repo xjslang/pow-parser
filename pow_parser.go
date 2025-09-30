@@ -62,18 +62,18 @@ func Plugin(pb *parser.Builder) {
 		return next()
 	})
 
-	pb.RegisterPrefixOperator(typeofTokenType, func(p *parser.Parser, right func() ast.Expression) ast.Expression {
+	pb.RegisterPrefixOperator(typeofTokenType, func(tok token.Token, right func() ast.Expression) ast.Expression {
 		exp := &TypeofExpression{}
-		exp.Token = p.CurrentToken
+		exp.Token = tok
 		exp.Operator = "typeof"
 		exp.Right = right()
 		return exp
 	})
 
 	// registers the infix `**` operator with a specific precedence
-	pb.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(p *parser.Parser, left ast.Expression, right func() ast.Expression) ast.Expression {
+	pb.RegisterInfixOperator(powTokenType, parser.PRODUCT+1, func(tok token.Token, left ast.Expression, right func() ast.Expression) ast.Expression {
 		return &PowExpression{
-			Token: p.CurrentToken,
+			Token: tok,
 			Left:  left,
 			Right: right(),
 		}
