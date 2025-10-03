@@ -33,11 +33,9 @@ func Plugin(pb *parser.Builder) {
 
 	lb.UseTokenInterceptor(func(l *lexer.Lexer, next func() token.Token) token.Token {
 		if l.CurrentChar == '*' && l.PeekChar() == '*' {
-			line := l.Line
-			column := l.Column
 			l.ReadChar() // consume the first '*'
 			l.ReadChar() // consume the second '*'
-			return l.NewToken(powTokenType, "**", line, column)
+			return l.NewToken(powTokenType, "**")
 		}
 		return next()
 	})
