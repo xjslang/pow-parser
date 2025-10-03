@@ -9,19 +9,6 @@ import (
 	"github.com/xjslang/xjs/token"
 )
 
-type TypeofExpression struct {
-	ast.UnaryExpression
-}
-
-func (te *TypeofExpression) WriteTo(b *strings.Builder) {
-	if te.Operator == "typeof" {
-		b.WriteString("typeof ")
-		te.Right.WriteTo(b)
-	} else {
-		te.UnaryExpression.WriteTo(b)
-	}
-}
-
 // PowExpression represents a 'power' node
 type PowExpression struct {
 	Token token.Token // the operator token
@@ -43,15 +30,6 @@ func Plugin(pb *parser.Builder) {
 	// instructs the parser who to read the new `**` token
 	lb := pb.LexerBuilder
 	powTokenType := lb.RegisterTokenType("pow")
-	typeofTokenType := lb.RegisterTokenType("typeof")
-
-	lb.UseTokenInterceptor(func(l *lexer.Lexer, next func() token.Token) token.Token {
-		ret := next()
-		if ret.Literal == "typeof" {
-			ret.Type = typeofTokenType
-		}
-		return ret
-	})
 
 	lb.UseTokenInterceptor(func(l *lexer.Lexer, next func() token.Token) token.Token {
 		if l.CurrentChar == '*' && l.PeekChar() == '*' {
@@ -60,14 +38,6 @@ func Plugin(pb *parser.Builder) {
 			return token.Token{Type: powTokenType, Literal: "pow", Column: l.Column, Line: l.Line}
 		}
 		return next()
-	})
-
-	pb.RegisterPrefixOperator(typeofTokenType, func(tok token.Token, right func() ast.Expression) ast.Expression {
-		exp := &TypeofExpression{}
-		exp.Token = tok
-		exp.Operator = "typeof"
-		exp.Right = right()
-		return exp
 	})
 
 	// registers the infix `**` operator with a specific precedence
